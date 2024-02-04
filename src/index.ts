@@ -1,10 +1,12 @@
-import { Collection } from './models/Collection';
-import { User, UserProbs } from './models/User';
+import { UserForm } from './views/UserForm';
+import { User } from './models/User';
 
-const collection = User.buildUserCollection();
+const user = User.buildUser({ name: 'Ahmed', age: 29 });
 
-collection.on('change', () => {
-  console.log(collection);
-});
-
-collection.fetch();
+const rootElement = document.getElementById('root');
+if (rootElement) {
+  const userForm = new UserForm(rootElement, user);
+  userForm.render();
+} else {
+  console.error("Element with ID 'root' not found.");
+}
