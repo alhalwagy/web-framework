@@ -29,15 +29,10 @@ export class Model<T extends HasId> {
     private sync: Sync<T>
   ) {}
 
-  get on() {
-    return this.events.on;
-  }
-  get trigger() {
-    return this.events.trigger;
-  }
-  get get() {
-    return this.atributes.get;
-  }
+  on = this.events.on;
+  trigger = this.events.trigger;
+  get = this.atributes.get;
+
   set(update: T): void {
     this.atributes.set(update);
     this.events.trigger('change');

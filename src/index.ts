@@ -1,9 +1,10 @@
-import { User } from './models/User';
+import { Collection } from './models/Collection';
+import { User, UserProbs } from './models/User';
 
-const user = User.buildUser({ id: 'bff3' });
+const collection = User.buildUserCollection();
 
-user.on('change', () => {
-  console.log(user);
+collection.on('change', () => {
+  console.log(collection);
 });
 
-user.fetch();
+collection.fetch();
