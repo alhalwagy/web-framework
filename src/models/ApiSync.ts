@@ -3,7 +3,7 @@ import axios, { AxiosPromise } from 'axios';
 interface HasId {
   id?: string;
 }
-export class Sync<T extends HasId> {
+export class ApiSync<T extends HasId> {
   constructor(public rooturl: string) {}
   fetch(id: string): AxiosPromise {
     return axios.get(`${this.rooturl}/${id}`);
