@@ -1,34 +1,54 @@
 import axios, { AxiosResponse } from 'axios';
-
-interface UserProbs {
+import { Eventing } from './Eventing';
+import { Sync } from './Sync';
+import { Atributes } from './Attribute';
+export interface UserProbs {
   id?: string;
   name?: string;
   age?: number;
 }
-
+const rootUrl = 'http://localhost:3000/users';
 export class User {
-  constructor(private data: UserProbs) {}
+  public events: Eventing = new Eventing();
+  public sync: Sync<UserProbs> = new Sync<UserProbs>(rootUrl);
+  public atributes: Atributes<UserProbs>;
 
-  get(probUser: string): string | number {
-    return this.data[probUser];
+  constructor(attrs: UserProbs) {
+    this.atributes = new Atributes<UserProbs>(attrs);
+  }
+  get on() {
+    return this.events.on;
+  }
+  get trigger() {
+    return this.events.trigger;
+  }
+  get get() {
+    return this.atributes.get;
   }
   set(update: UserProbs): void {
-    Object.assign(this.data, update);
+    this.atributes.set(update);
+    this.events.trigger('change');
   }
 
   fetch(): void {
-    axios
-      .get(`http://localhost:3000/users/${this.get('id')}`)
-      .then((response: AxiosResponse) => {
-        this.set(response.data);
-      });
+    const id = this.atributes.get('id');
+    if (typeof id !== 'string') {
+      throw new Error('Id Not found. 404');
+    }
+
+    this.sync.fetch(id).then((response: AxiosResponse): void => {
+      this.set(response.data);
+    });
   }
   save(): void {
-    const id = this.get('id');
-    if (id) {
-      axios.put(`http://localhost:3000/users/${id}`, this.data);
-    } else {
-      axios.post('http://localhost:3000/users', this.data);
-    }
+    const data = this.atributes.getAll();
+    this.sync
+      .save(data)
+      .then((response: AxiosResponse): void => {
+        this.trigger('save');
+      })
+      .catch(() => {
+        this.trigger('error');
+      });
   }
 }

@@ -1,9 +1,31 @@
 {
   "users": [
     {
-      "id": "5cc7",
-      "name": "halwgy",
-      "age": 20
+      "id": "bff3",
+      "name": "newwwwwwwwwwwwwwwwwwwww",
+      "age": 15465
+    },
+    {
+      "id": "a40b",
+      "events": {
+        "events": {}
+      },
+      "sync": {
+        "rooturl": "http://localhost:3000/users"
+      },
+      "atributes": {
+        "data": {
+          "name": "halwgy",
+          "age": 20
+        }
+      }
+    },
+    {
+      "id": "a3ad",
+      "data": {
+        "name": "halwgy",
+        "age": 20
+      }
     }
   ]
 }
